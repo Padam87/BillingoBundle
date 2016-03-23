@@ -16,7 +16,7 @@ padam87_billingo:
 # Usage:
 
 ```php
-$client = $this->billingo->request('POST', 'clients', [/* ... */]);
+$client = $this->get('padam87_billingo.api')->request('POST', 'clients', [/* ... */]);
 ```
 
 In the example above `$client` will contain the complete response from the API.
