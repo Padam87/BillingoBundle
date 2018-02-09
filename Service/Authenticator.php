@@ -24,7 +24,7 @@ class Authenticator
     public function getAuthKey()
     {
         if ($this->authKey === null) {
-            $time = time();
+            $time = time() + $this->config['time_offset'];
 
             $this->authKey = JWT::encode(
                 [
