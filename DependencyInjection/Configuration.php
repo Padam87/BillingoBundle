@@ -21,7 +21,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('authentication')
                     ->isRequired()
-                    ->cannotBeEmpty()
                     ->children()
                         ->scalarNode('public_key')
                             ->isRequired()
