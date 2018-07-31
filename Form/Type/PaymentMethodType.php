@@ -25,7 +25,12 @@ class PaymentMethodType extends ChoiceType
         parent::configureOptions($resolver);
 
         $request = $this->requestStack->getCurrentRequest();
-        $locale = $request->getLocale();
+
+        $locale = null;
+
+        if ($request = $this->requestStack->getCurrentRequest()) {
+            $locale = $request->getLocale();
+        }
 
         if (!in_array($locale, ['hu', 'en', 'de'])) {
             $locale = 'en';
