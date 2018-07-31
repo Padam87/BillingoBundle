@@ -2,6 +2,8 @@
 
 namespace Padam87\BillingoBundle\DependencyInjection;
 
+use Padam87\BillingoBundle\Service\Api;
+use Padam87\BillingoBundle\Service\Authenticator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -17,13 +19,13 @@ class Padam87BillingoExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yaml');
 
-        $authenticator = $container->getDefinition('padam87_billingo.authenticator');
+        $authenticator = $container->getDefinition(Authenticator::class);
         $authenticator->addMethodCall('setConfig', [$config['authentication']]);
 
-        $api = $container->getDefinition('padam87_billingo.api');
+        $api = $container->getDefinition(Api::class);
         $api->addMethodCall('setConfig', [$config['api']]);
     }
 }
