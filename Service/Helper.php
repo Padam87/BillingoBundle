@@ -2,6 +2,8 @@
 
 namespace Padam87\BillingoBundle\Service;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 class Helper
 {
     const TYPE_DRAFT = 0;
@@ -25,9 +27,9 @@ class Helper
         return $this->api->request('POST', 'invoices', $data)['data'];
     }
 
-    public function downloadInvoice($id): UploadedFile
+    public function downloadInvoice($id, string $prefix = 'invoice'): UploadedFile
     {
-        $name = sprintf('invoice-%d.pdf', $id);
+        $name = sprintf('%s-%d.pdf', $prefix, $id);
         $path = sprintf('%s/%s', sys_get_temp_dir(), $name);
         $code = $this->api->request('GET', 'invoices/' . $id. '/code')['data']['code'];
 
