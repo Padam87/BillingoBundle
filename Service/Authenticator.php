@@ -18,10 +18,8 @@ class Authenticator
 
     /**
      * Get or generate JWT authorization key
-     *
-     * @return string
      */
-    public function getAuthKey()
+    public function getAuthKey(): string
     {
         if ($this->authKey === null) {
             $time = time() + $this->config['time_offset'];
@@ -42,18 +40,12 @@ class Authenticator
         return $this->authKey;
     }
 
-    /**
-     * @return array
-     */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
 
-    /**
-     * @param array $config
-     */
-    public function setConfig($config)
+    public function setConfig(array $config)
     {
         $this->config = $config;
     }

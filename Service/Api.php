@@ -21,18 +21,12 @@ class Api
      */
     protected $client = null;
 
-    /**
-     * @param Authenticator $authenticator
-     */
     public function __construct(Authenticator $authenticator)
     {
         $this->authenticator = $authenticator;
     }
 
-    /**
-     * @return Client|null
-     */
-    public function getClient()
+    public function getClient(): ?Client
     {
         if ($this->client === null) {
             $this->client = new Client(
@@ -47,14 +41,6 @@ class Api
         return $this->client;
     }
 
-    /**
-     * @param string $method
-     * @param string $uri
-     * @param array  $data
-     *
-     * @return array
-     */
-    public function request($method, $uri, array $data = [])
     public function request(string $method, string $uri, array $data = [], bool $raw = false)
     {
         $options = [
@@ -82,18 +68,12 @@ class Api
         return $responseData;
     }
 
-    /**
-     * @return array
-     */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
 
-    /**
-     * @param array $config
-     */
-    public function setConfig($config)
+    public function setConfig(array $config)
     {
         $this->config = $config;
     }
