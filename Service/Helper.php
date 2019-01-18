@@ -27,23 +27,18 @@ class Helper
         return $this->api->request('POST', 'invoices', $data)['data'];
     }
 
-    public function downloadInvoice($id, string $prefix = 'invoice'): UploadedFile
+    public function downloadInvoice($id, ?string $filename = null): UploadedFile
     {
-        $name = sprintf('%s-%d.pdf', $prefix, $id);
-        $path = sprintf('%s/%s', sys_get_temp_dir(), $name);
-        $code = $this->api->request('GET', 'invoices/' . $id. '/code')['data']['code'];
+        if ($filename === null) {
+            $filename = (string) $id;
+        }
 
-        $fh = fopen($path, 'w');
-        $options = [
-            CURLOPT_FILE => $fh,
-            CURLOPT_URL => 'https://www.billingo.hu/access/c:' . $code . '/download',
-        ];
+        $name = sprintf('%s.pdf', $filename);
+        $path = sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $name);
 
-        $ch = curl_init();
-        curl_setopt_array($ch, $options);
-        curl_exec($ch);
-        curl_close($ch);
-        fclose($fh);
+        $file = (string) $this->api->request('GET', 'invoices/' . $id . '/download', [], true);
+
+        file_put_contents($path, $file);
 
         return new UploadedFile($path, $name, null, null, null, true);
     }

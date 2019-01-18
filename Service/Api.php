@@ -55,6 +55,7 @@ class Api
      * @return array
      */
     public function request($method, $uri, array $data = [])
+    public function request(string $method, string $uri, array $data = [], bool $raw = false)
     {
         $options = [
             'headers' => [
@@ -67,6 +68,10 @@ class Api
         }
 
         $response = $this->getClient()->request($method, $uri, $options);
+
+        if ($raw) {
+            return $response->getBody();
+        }
 
         if (null === $responseData = @json_decode($response->getBody(), true)) {
             throw new \UnexpectedValueException(
