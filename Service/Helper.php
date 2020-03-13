@@ -69,4 +69,9 @@ class Helper
     {
         return $this->api->request('GET', 'payment_methods/hu')['data'];
     }
+
+    public function getBankAccounts(): ?array
+    {
+        return $this->api->request('GET', 'bank_accounts')['data'];
+    }
 }

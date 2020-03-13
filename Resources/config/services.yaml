@@ -8,6 +8,7 @@ services:
     Padam87\BillingoBundle\Service\Api: ~
     Padam87\BillingoBundle\Service\Helper: ~
     Padam87\BillingoBundle\Form\Type\PaymentMethodType: ~
+    Padam87\BillingoBundle\Form\Type\BankAccountType: ~
 
     padam87_billingo.api:
         alias: 'Padam87\BillingoBundle\Service\Api'
