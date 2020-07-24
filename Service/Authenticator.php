@@ -6,15 +6,13 @@ use Firebase\JWT\JWT;
 
 class Authenticator
 {
-    /**
-     * @var array
-     */
     protected $config;
-
-    /**
-     * @var string
-     */
     protected $authKey = null;
+
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
 
     /**
      * Get or generate JWT authorization key
@@ -22,31 +20,21 @@ class Authenticator
     public function getAuthKey(): string
     {
         if ($this->authKey === null) {
-            $time = time() + $this->config['time_offset'];
+            $time = time() + $this->config['authentication']['time_offset'];
 
             $this->authKey = JWT::encode(
                 [
-                    'sub' => $this->config['public_key'],
+                    'sub' => $this->config['authentication']['public_key'],
                     'iat' => $time,
-                    'exp' => $time + $this->config['lifetime'],
+                    'exp' => $time + $this->config['authentication']['lifetime'],
                     'iss' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'cli',
                     'nbf' => $time,
-                    'jti' => md5($this->config['public_key'] . $time)
+                    'jti' => md5($this->config['authentication']['public_key'] . $time)
                 ],
-                $this->config['private_key']
+                $this->config['authentication']['private_key']
             );
         }
 
         return $this->authKey;
-    }
-
-    public function getConfig(): array
-    {
-        return $this->config;
-    }
-
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
     }
 }

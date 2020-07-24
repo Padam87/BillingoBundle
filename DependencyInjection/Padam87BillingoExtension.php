@@ -22,10 +22,6 @@ class Padam87BillingoExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
 
-        $authenticator = $container->getDefinition(Authenticator::class);
-        $authenticator->addMethodCall('setConfig', [$config['authentication']]);
-
-        $api = $container->getDefinition(Api::class);
-        $api->addMethodCall('setConfig', [$config['api']]);
+        $container->setParameter('padam87_billingo.config', $config);
     }
 }

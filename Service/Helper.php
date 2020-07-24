@@ -40,7 +40,7 @@ class Helper
 
         file_put_contents($path, $file);
 
-        return new UploadedFile($path, $name, null, null, null, true);
+        return new UploadedFile($path, $name, null, null, true);
     }
 
     public function cancelInvoice($id): string

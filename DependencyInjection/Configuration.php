@@ -13,10 +13,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('padam87_billingo');
+        $treeBuilder = new TreeBuilder('padam87_billingo');
 
-        $rootNode
+        $treeBuilder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
                 ->arrayNode('authentication')

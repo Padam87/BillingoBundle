@@ -2,48 +2,26 @@
 
 namespace Padam87\BillingoBundle\Service;
 
-use GuzzleHttp\Client;
+use Symfony\Component\HttpClient\CurlHttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Api
 {
-    /**
-     * @var Authenticator
-     */
     protected $authenticator;
-
-    /**
-     * @var array
-     */
+    protected $client;
     protected $config;
 
-    /**
-     * @var Client|null
-     */
-    protected $client = null;
-
-    public function __construct(Authenticator $authenticator)
+    public function __construct(Authenticator $authenticator, ?HttpClientInterface $client, array $config)
     {
         $this->authenticator = $authenticator;
-    }
-
-    public function getClient(): ?Client
-    {
-        if ($this->client === null) {
-            $this->client = new Client(
-                [
-                    'verify' => false,
-                    'debug' => false,
-                    'base_uri' => $this->config['base_url']
-                ]
-            );
-        }
-
-        return $this->client;
+        $this->client = $client ?? new CurlHttpClient();
+        $this->config = $config;
     }
 
     public function request(string $method, string $uri, array $data = [], bool $raw = false)
     {
         $options = [
+            'base_uri' => $this->config['api']['base_url'],
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->authenticator->getAuthKey(),
             ]
@@ -53,28 +31,12 @@ class Api
             $options['json'] = $data;
         }
 
-        $response = $this->getClient()->request($method, $uri, $options);
+        $response = $this->client->request($method, $uri, $options);
 
         if ($raw) {
-            return $response->getBody();
+            return $response->getContent();
         }
 
-        if (null === $responseData = @json_decode($response->getBody(), true)) {
-            throw new \UnexpectedValueException(
-                sprintf('There was an error decoding the response. %s', json_last_error_msg())
-            );
-        }
-
-        return $responseData;
-    }
-
-    public function getConfig(): array
-    {
-        return $this->config;
-    }
-
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
+        return $response->toArray();
     }
 }
