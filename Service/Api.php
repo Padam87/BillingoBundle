@@ -4,6 +4,7 @@ namespace Padam87\BillingoBundle\Service;
 
 use Symfony\Component\HttpClient\CurlHttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Api
 {
@@ -18,7 +19,7 @@ class Api
         $this->config = $config;
     }
 
-    public function request(string $method, string $uri, array $data = [], bool $raw = false)
+    public function request(string $method, string $uri, array $data = []): ResponseInterface
     {
         $options = [
             'base_uri' => $this->config['api']['base_url'],
@@ -31,12 +32,6 @@ class Api
             $options['json'] = $data;
         }
 
-        $response = $this->client->request($method, $uri, $options);
-
-        if ($raw) {
-            return $response->getContent();
-        }
-
-        return $response->toArray();
+        return $this->client->request($method, $uri, $options);
     }
 }

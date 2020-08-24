@@ -2,7 +2,10 @@
 
 namespace Padam87\BillingoBundle\Service;
 
+use Padam87\BillingoBundle\Exception\BillingoException;
+use Padam87\BillingoBundle\Exception\DocumentNotAvailableException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Helper
 {
@@ -17,14 +20,29 @@ class Helper
         $this->api = $api;
     }
 
+    public function responseToArray(ResponseInterface $response): array
+    {
+        $array = $response->toArray(false);
+
+        if (array_key_exists('success', $array) && $array['success'] === false) {
+            throw new BillingoException(is_array($array['error']) ? implode(', ', $array['error']) : $array['error'], $response->getStatusCode());
+        }
+
+        return $array['data'];
+    }
+
     public function createClient(array $data): array
     {
-        return $this->api->request('POST', 'clients', $data)['data'];
+        $response = $this->api->request('POST', 'clients', $data);
+
+        return $this->responseToArray($response);
     }
 
     public function createInvoice(array $data): array
     {
-        return $this->api->request('POST', 'invoices', $data)['data'];
+        $response = $this->api->request('POST', 'invoices', $data);
+
+        return $this->responseToArray($response);
     }
 
     public function downloadInvoice($id, ?string $filename = null): UploadedFile
@@ -33,28 +51,37 @@ class Helper
             $filename = (string) $id;
         }
 
+        $response = $this->api->request('GET', 'invoices/' . $id . '/download');
+        $headers = $response->getHeaders();
+
+        if (!array_key_exists('content-type', $headers) || !in_array('application/pdf', $headers['content-type'])) {
+            $data = $this->responseToArray($response);
+
+            throw new DocumentNotAvailableException($data['error']);
+        }
+
         $name = sprintf('%s.pdf', $filename);
         $path = sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $name);
 
-        $file = (string) $this->api->request('GET', 'invoices/' . $id . '/download', [], true);
-
-        file_put_contents($path, $file);
+        file_put_contents($path, $response->getContent());
 
         return new UploadedFile($path, $name, null, null, true);
     }
 
-    public function cancelInvoice($id): string
+    public function cancelInvoice($id): array
     {
-        return $this->api->request('GET', "invoices/$id/cancel")['data']['id'];
+        $response = $this->api->request('GET', "invoices/$id/cancel");
+
+        return $this->responseToArray($response);
     }
 
-    public function payInvoice($id, float $amount, int $paymentMethod, \DateTime $date = null): bool
+    public function payInvoice($id, float $amount, int $paymentMethod, \DateTime $date = null): array
     {
         if ($date === null) {
             $date = new \DateTime();
         }
 
-        return $this->api->request(
+        $response = $this->api->request(
             'POST',
             "invoices/$id/pay",
             [
@@ -62,16 +89,22 @@ class Helper
                 'amount' => $amount,
                 'payment_method' => $paymentMethod,
             ]
-        )['success'];
+        );
+
+        return $this->responseToArray($response);
     }
 
     public function getPaymentMethods(): array
     {
-        return $this->api->request('GET', 'payment_methods/hu')['data'];
+        $response = $this->api->request('GET', 'payment_methods/hu');
+
+        return $this->responseToArray($response);
     }
 
     public function getBankAccounts(): ?array
     {
-        return $this->api->request('GET', 'bank_accounts')['data'];
+        $response = $this->api->request('GET', 'bank_accounts');
+
+        return $this->responseToArray($response);
     }
 }
