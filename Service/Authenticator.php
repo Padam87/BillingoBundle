@@ -19,6 +19,14 @@ class Authenticator
      */
     public function getAuthKey(): string
     {
+        if ($this->authKey) {
+            try {
+                JWT::decode($this->authKey, $this->config['authentication']['private_key'], ['HS256']);
+            } catch (\Exception $e) {
+                $this->authKey = null;
+            }
+        }
+
         if ($this->authKey === null) {
             $time = time() + $this->config['authentication']['time_offset'];
 
