@@ -24,7 +24,7 @@ class Helper
     {
         $array = $response->toArray(false);
 
-        if (array_key_exists('success', $array) && $array['success'] === false) {
+        if (array_key_exists('success', $array) && $array['success'] === 'false') {
             throw new BillingoException(is_array($array['error']) ? implode(', ', $array['error']) : $array['error'], $response->getStatusCode());
         }
 
