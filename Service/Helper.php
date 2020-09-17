@@ -25,7 +25,15 @@ class Helper
         $array = $response->toArray(false);
 
         if (array_key_exists('success', $array) && $array['success'] === 'false') {
-            throw new BillingoException(is_array($array['error']) ? implode(', ', $array['error']) : $array['error'], $response->getStatusCode());
+            if (array_key_exists('errors', $array)) {
+                $message = implode(', ', $array['errors']);
+            } elseif (array_key_exists('error', $array)) {
+                $message = $array['error'];
+            } else {
+                $message = '';
+            }
+
+            throw new BillingoException($message, $response->getStatusCode());
         }
 
         return $array['data'];
