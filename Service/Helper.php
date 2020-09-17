@@ -55,7 +55,7 @@ class Helper
         $headers = $response->getHeaders();
 
         if (!array_key_exists('content-type', $headers) || !in_array('application/pdf', $headers['content-type'])) {
-            $data = $this->responseToArray($response);
+            $data = $response->toArray(false);
 
             throw new DocumentNotAvailableException($data['error']);
         }
