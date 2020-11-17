@@ -24,9 +24,15 @@ class Helper
     {
         $array = $response->toArray(false);
 
-        if (array_key_exists('success', $array) && $array['success'] === 'false') {
+        if (array_key_exists('success', $array) && ($array['success'] === 'false' || $array['success'] === false)) {
             if (array_key_exists('errors', $array)) {
-                $message = implode(', ', $array['errors']);
+                $message = [];
+
+                foreach ($array['errors'] as $k => $v) {
+                    $message[] = sprintf('%s: %s', $k, $v);
+                }
+
+                $message = implode(', ', $message);
             } elseif (array_key_exists('error', $array)) {
                 $message = $array['error'];
             } else {
