@@ -1,0 +1,18 @@
+language: php
+
+php:
+    - 7.4
+    - 8.0
+
+matrix:
+    fast_finish: true
+
+before_script:
+    - composer update --no-interaction --no-suggest
+
+script:
+    - phpunit
+
+notifications:
+    email:
+        - prager.adam87@gmail.com
