@@ -6,8 +6,8 @@ use Firebase\JWT\JWT;
 
 class Authenticator
 {
-    protected $config;
-    protected $authKey = null;
+    protected array $config;
+    protected ?string $authKey = null;
 
     public function __construct(array $config)
     {

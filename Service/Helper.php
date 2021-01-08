@@ -13,7 +13,7 @@ class Helper
     const TYPE_PROFORMA = 1;
     const TYPE_NORMAL = 3;
 
-    private $api;
+    private Api $api;
 
     public function __construct(Api $api)
     {
