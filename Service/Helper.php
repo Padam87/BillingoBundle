@@ -108,9 +108,9 @@ class Helper
         return $this->responseToArray($response);
     }
 
-    public function getPaymentMethods(): array
+    public function getPaymentMethods($locale = 'hu'): array
     {
-        $response = $this->api->request('GET', 'payment_methods/hu');
+        $response = $this->api->request('GET', 'payment_methods/' . $locale);
 
         return $this->responseToArray($response);
     }

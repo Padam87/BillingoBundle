@@ -41,7 +41,7 @@ class HelperTest extends TestCase
     {
         list($data, $response, $api, $helper) = $this->defaults();
 
-        $this->assertEquals($data['data'], $helper->getPaymentMethods([]));
+        $this->assertEquals($data['data'], $helper->getPaymentMethods());
     }
 
     /**
@@ -113,6 +113,6 @@ class HelperTest extends TestCase
     {
         list($data, $response, $api, $helper) = $this->defaults();
 
-        $this->assertEquals($data['data'], $helper->getBankAccounts([]));
+        $this->assertEquals($data['data'], $helper->getBankAccounts());
     }
 }
