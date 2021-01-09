@@ -24,11 +24,9 @@ class PaymentMethodType extends ChoiceType
     {
         parent::configureOptions($resolver);
 
-        $request = $this->requestStack->getCurrentRequest();
-
         $locale = null;
 
-        if ($request = $this->requestStack->getCurrentRequest()) {
+        if (null !== $request = $this->requestStack->getCurrentRequest()) {
             $locale = $request->getLocale();
         }
 

@@ -8,9 +8,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Api
 {
-    protected $authenticator;
-    protected $client;
-    protected $config;
+    protected Authenticator $authenticator;
+    protected HttpClientInterface $client;
+    protected array $config;
 
     public function __construct(Authenticator $authenticator, ?HttpClientInterface $client, array $config)
     {

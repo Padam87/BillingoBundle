@@ -13,7 +13,7 @@ class Helper
     const TYPE_PROFORMA = 1;
     const TYPE_NORMAL = 3;
 
-    private $api;
+    private Api $api;
 
     public function __construct(Api $api)
     {
@@ -108,9 +108,9 @@ class Helper
         return $this->responseToArray($response);
     }
 
-    public function getPaymentMethods(): array
+    public function getPaymentMethods($locale = 'hu'): array
     {
-        $response = $this->api->request('GET', 'payment_methods/hu');
+        $response = $this->api->request('GET', 'payment_methods/' . $locale);
 
         return $this->responseToArray($response);
     }
