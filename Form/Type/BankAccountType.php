@@ -3,18 +3,17 @@
 namespace Padam87\BillingoBundle\Form\Type;
 
 use Padam87\BillingoBundle\Service\Helper;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BankAccountType extends ChoiceType
+class BankAccountType extends AbstractType
 {
     private $billingo;
 
     public function __construct(Helper $billingo)
     {
         $this->billingo = $billingo;
-
-        parent::__construct();
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -25,7 +24,7 @@ class BankAccountType extends ChoiceType
 
         $choices = [];
         foreach ($accounts as $id => $account) {
-            $name = sprintf('[%s] %s', $account['attributes']['bank_name'], $account['attributes']['account_no']);
+            $name = sprintf('[%s] %s', $account['name'], $account['account_number']);
 
             $choices[$name] = $account['id'];
         }
@@ -38,5 +37,10 @@ class BankAccountType extends ChoiceType
                 ]
             )
         ;
+    }
+
+    public function getParent()
+    {
+        return ChoiceType::class;
     }
 }
