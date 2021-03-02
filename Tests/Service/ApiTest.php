@@ -3,7 +3,6 @@
 namespace Padam87\BillingoBundle\Tests\Service;
 
 use Padam87\BillingoBundle\Service\Api;
-use Padam87\BillingoBundle\Service\Authenticator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -14,8 +13,7 @@ class ApiTest extends TestCase
     {
         return [
             'authentication' => [
-                'public_key' => 'public_key',
-                'private_key' => 'private_key',
+                'token' => 'token',
                 'lifetime' => 900,
                 'time_offset' => -180,
             ],
@@ -31,12 +29,9 @@ class ApiTest extends TestCase
      */
     public function request()
     {
-        $authenticator = $this->getMockBuilder(Authenticator::class)->disableOriginalConstructor()->getMock();
-        $authenticator->expects($this->once())->method('getAuthKey')->willReturn('key');
-
         $client = $this->getMockBuilder(HttpClientInterface::class)->getMock();
 
-        $api = new Api($authenticator, $client, $this->getConfig());
+        $api = new Api($client, $this->getConfig());
         $response = $api->request('GET', '/time');
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
