@@ -4,10 +4,6 @@ services:
         autoconfigure: true
         public: false
 
-    Padam87\BillingoBundle\Service\Authenticator:
-        arguments:
-            $config: '%padam87_billingo.config%'
-
     Padam87\BillingoBundle\Service\Api:
         arguments:
             $config: '%padam87_billingo.config%'

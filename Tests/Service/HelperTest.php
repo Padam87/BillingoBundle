@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class HelperTest extends TestCase
 {
-    protected function defaults(array $data = ['data' => []]): array
+    protected function defaults(array $data = []): array
     {
         $response = $this->getMockBuilder(ResponseInterface::class)->disableOriginalConstructor()->getMock();
         $response->expects($this->once())->method('toArray')->willReturn($data);
@@ -31,17 +31,7 @@ class HelperTest extends TestCase
     {
         list($data, $response, $api, $helper) = $this->defaults();
 
-        $this->assertEquals($data['data'], $helper->createInvoice([]));
-    }
-
-    /**
-     * @test
-     */
-    public function getPaymentMethods()
-    {
-        list($data, $response, $api, $helper) = $this->defaults();
-
-        $this->assertEquals($data['data'], $helper->getPaymentMethods());
+        $this->assertEquals($data, $helper->createInvoice([]));
     }
 
     /**
@@ -51,7 +41,7 @@ class HelperTest extends TestCase
     {
         list($data, $response, $api, $helper) = $this->defaults();
 
-        $this->assertEquals($data['data'], $helper->cancelInvoice(1));
+        $this->assertEquals($data, $helper->cancelInvoice(1));
     }
 
     /**
@@ -61,7 +51,7 @@ class HelperTest extends TestCase
     {
         list($data, $response, $api, $helper) = $this->defaults();
 
-        $this->assertEquals($data['data'], $helper->payInvoice(1, 100, 1));
+        $this->assertEquals($data, $helper->payInvoice(1, 100, 1));
     }
 
     /**
@@ -103,7 +93,7 @@ class HelperTest extends TestCase
     {
         list($data, $response, $api, $helper) = $this->defaults();
 
-        $this->assertEquals($data['data'], $helper->createClient([]));
+        $this->assertEquals($data, $helper->createClient([]));
     }
 
     /**
@@ -111,8 +101,8 @@ class HelperTest extends TestCase
      */
     public function getBankAccounts()
     {
-        list($data, $response, $api, $helper) = $this->defaults();
+        list($data, $response, $api, $helper) = $this->defaults(['data' => []]);
 
-        $this->assertEquals($data['data'], $helper->getBankAccounts());
+        $this->assertEquals([], $helper->getBankAccounts());
     }
 }

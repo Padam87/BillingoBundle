@@ -8,13 +8,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Api
 {
-    protected Authenticator $authenticator;
     protected HttpClientInterface $client;
     protected array $config;
 
-    public function __construct(Authenticator $authenticator, ?HttpClientInterface $client, array $config)
+    public function __construct(?HttpClientInterface $client, array $config)
     {
-        $this->authenticator = $authenticator;
         $this->client = $client ?? new CurlHttpClient();
         $this->config = $config;
     }
@@ -24,7 +22,7 @@ class Api
         $options = [
             'base_uri' => $this->config['api']['base_url'],
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->authenticator->getAuthKey(),
+                'X-API-KEY' => $this->config['authentication']['token'],
             ]
         ];
 
