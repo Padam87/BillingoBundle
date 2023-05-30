@@ -93,19 +93,21 @@ class Helper
         return $this->responseToArray($response);
     }
 
-    public function payInvoice($id, float $amount, int $paymentMethod, \DateTime $date = null): array
+    public function payInvoice($id, float $amount, string $paymentMethod, \DateTime $date = null): array
     {
         if ($date === null) {
             $date = new \DateTime();
         }
 
         $response = $this->api->request(
-            'POST',
-            "invoices/$id/pay",
+            'PUT',
+            "documents/$id/payments",
             [
-                'date' => $date->format('Y-m-d'),
-                'amount' => $amount,
-                'payment_method' => $paymentMethod,
+                [
+                    'date' => $date->format('Y-m-d'),
+                    'price' => $amount,
+                    'payment_method' => $paymentMethod,
+                ]
             ]
         );
 
