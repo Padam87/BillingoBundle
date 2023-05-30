@@ -75,7 +75,7 @@ class Helper
         if (!array_key_exists('content-type', $headers) || !in_array('application/pdf', $headers['content-type'])) {
             $data = $response->toArray(false);
 
-            throw new DocumentNotAvailableException($data['error']);
+            throw new DocumentNotAvailableException($data['error']['message']);
         }
 
         $name = sprintf('%s.pdf', $filename);
