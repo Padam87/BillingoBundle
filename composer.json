@@ -19,12 +19,12 @@
         "psr-4": {"Padam87\\BillingoBundle\\": ""}
     },
     "require": {
-        "php": ">=7.4.0",
-        "symfony/config": "^4.0 || ^5.0 || ^6.0",
-        "symfony/dependency-injection": "^4.0 || ^5.0 || ^6.0",
-        "symfony/form": "^4.0 || ^5.0 || ^6.0",
-        "symfony/http-foundation": "^4.0 || ^5.0 || ^6.0",
-        "symfony/http-client": "^4.0 || ^5.0 || ^6.0"
+        "php": "^8.0",
+        "symfony/config": "^6.0 || ^7.0",
+        "symfony/dependency-injection": "^6.0 || ^7.0",
+        "symfony/form": "^6.0 || ^7.0",
+        "symfony/http-foundation": "^6.0 || ^7.0",
+        "symfony/http-client": "^6.0 || ^7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
