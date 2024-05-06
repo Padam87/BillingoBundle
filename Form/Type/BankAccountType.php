@@ -9,14 +9,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BankAccountType extends AbstractType
 {
-    private $billingo;
+    private Helper $billingo;
 
     public function __construct(Helper $billingo)
     {
         $this->billingo = $billingo;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -39,7 +39,7 @@ class BankAccountType extends AbstractType
         ;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return ChoiceType::class;
     }

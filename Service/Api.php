@@ -26,7 +26,7 @@ class Api
             ]
         ];
 
-        if (!empty($data)) {
+        if ($data !== []) {
             $options['json'] = $data;
         }
 

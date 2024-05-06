@@ -27,9 +27,9 @@ class HelperTest extends TestCase
     /**
      * @test
      */
-    public function createInvoice()
+    public function createInvoice(): void
     {
-        list($data, $response, $api, $helper) = $this->defaults();
+        [$data, $response, $api, $helper] = $this->defaults();
 
         $this->assertEquals($data, $helper->createInvoice([]));
     }
@@ -37,9 +37,9 @@ class HelperTest extends TestCase
     /**
      * @test
      */
-    public function cancelInvoice()
+    public function cancelInvoice(): void
     {
-        list($data, $response, $api, $helper) = $this->defaults();
+        [$data, $response, $api, $helper] = $this->defaults();
 
         $this->assertEquals($data, $helper->cancelInvoice(1));
     }
@@ -47,9 +47,9 @@ class HelperTest extends TestCase
     /**
      * @test
      */
-    public function payInvoice()
+    public function payInvoice(): void
     {
-        list($data, $response, $api, $helper) = $this->defaults();
+        [$data, $response, $api, $helper] = $this->defaults();
 
         $this->assertEquals($data, $helper->payInvoice(1, 100, 1));
     }
@@ -57,11 +57,11 @@ class HelperTest extends TestCase
     /**
      * @test
      */
-    public function downloadInvoiceException()
+    public function downloadInvoiceException(): void
     {
         $this->expectException(DocumentNotAvailableException::class);
 
-        list($data, $response, $api, $helper) = $this->defaults(['error' => 'Document not ready.']);
+        [$data, $response, $api, $helper] = $this->defaults(['error' => 'Document not ready.']);
 
         $response->expects($this->once())->method('getHeaders')->willReturn([]);
 
@@ -71,7 +71,7 @@ class HelperTest extends TestCase
     /**
      * @test
      */
-    public function downloadInvoice()
+    public function downloadInvoice(): void
     {
         $response = $this->getMockBuilder(ResponseInterface::class)->disableOriginalConstructor()->getMock();
         $response->expects($this->once())->method('getHeaders')->willReturn(['content-type' => ['application/pdf']]);
@@ -89,9 +89,9 @@ class HelperTest extends TestCase
     /**
      * @test
      */
-    public function createClient()
+    public function createClient(): void
     {
-        list($data, $response, $api, $helper) = $this->defaults();
+        [$data, $response, $api, $helper] = $this->defaults();
 
         $this->assertEquals($data, $helper->createClient([]));
     }
@@ -99,9 +99,9 @@ class HelperTest extends TestCase
     /**
      * @test
      */
-    public function getBankAccounts()
+    public function getBankAccounts(): void
     {
-        list($data, $response, $api, $helper) = $this->defaults(['data' => []]);
+        [$data, $response, $api, $helper] = $this->defaults(['data' => []]);
 
         $this->assertEquals([], $helper->getBankAccounts());
     }

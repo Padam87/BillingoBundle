@@ -9,9 +9,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Helper
 {
-    const TYPE_DRAFT = 0;
-    const TYPE_PROFORMA = 1;
-    const TYPE_NORMAL = 3;
+    public const TYPE_DRAFT = 0;
+    public const TYPE_PROFORMA = 1;
+    public const TYPE_NORMAL = 3;
 
     private Api $api;
 

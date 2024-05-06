@@ -27,7 +27,7 @@ class ApiTest extends TestCase
     /**
      * @test
      */
-    public function request()
+    public function request(): void
     {
         $client = $this->getMockBuilder(HttpClientInterface::class)->getMock();
 
