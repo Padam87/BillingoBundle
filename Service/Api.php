@@ -9,12 +9,10 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class Api
 {
     protected HttpClientInterface $client;
-    protected array $config;
 
-    public function __construct(?HttpClientInterface $client, array $config)
+    public function __construct(?HttpClientInterface $client, protected array $config)
     {
         $this->client = $client ?? new CurlHttpClient();
-        $this->config = $config;
     }
 
     public function request(string $method, string $uri, array $data = []): ResponseInterface

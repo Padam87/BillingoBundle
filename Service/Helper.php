@@ -13,11 +13,8 @@ class Helper
     public const TYPE_PROFORMA = 1;
     public const TYPE_NORMAL = 3;
 
-    private Api $api;
-
-    public function __construct(Api $api)
+    public function __construct(private Api $api)
     {
-        $this->api = $api;
     }
 
     public function responseToArray(ResponseInterface $response): array
@@ -63,7 +60,7 @@ class Helper
         return $this->responseToArray($response);
     }
 
-    public function downloadInvoice($id, ?string $filename = null): UploadedFile
+    public function downloadInvoice(string $id, ?string $filename = null): UploadedFile
     {
         if ($filename === null) {
             $filename = (string) $id;
@@ -86,14 +83,14 @@ class Helper
         return new UploadedFile($path, $name, null, null, true);
     }
 
-    public function cancelInvoice($id): array
+    public function cancelInvoice(string $id): array
     {
-        $response = $this->api->request('POST', "documents/$id/cancel");
+        $response = $this->api->request('POST', sprintf('documents/%s/cancel', $id));
 
         return $this->responseToArray($response);
     }
 
-    public function payInvoice($id, float $amount, string $paymentMethod, \DateTime $date = null): array
+    public function payInvoice(string $id, float $amount, string $paymentMethod, ?\DateTime $date = null): array
     {
         if ($date === null) {
             $date = new \DateTime();
@@ -101,7 +98,7 @@ class Helper
 
         $response = $this->api->request(
             'PUT',
-            "documents/$id/payments",
+            sprintf('documents/%s/payments', $id),
             [
                 [
                     'date' => $date->format('Y-m-d'),
