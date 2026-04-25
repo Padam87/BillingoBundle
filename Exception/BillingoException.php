@@ -6,15 +6,11 @@ use Throwable;
 
 class BillingoException extends \Exception
 {
-    private array $errors = [];
-
-    public function __construct($message = "", $code = 0, Throwable $previous = null, array $errors = [])
+    public function __construct($message = "", $code = 0, ?Throwable $previous = null, private array $errors = [])
     {
-        $this->errors = $errors;
-
         $message = [$message];
 
-        foreach ($errors as $error) {
+        foreach ($this->errors as $error) {
             $message[] = sprintf('%s: %s', $error['field'], $error['message']);
         }
 

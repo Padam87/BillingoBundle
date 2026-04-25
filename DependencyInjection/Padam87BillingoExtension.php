@@ -3,12 +3,9 @@
 namespace Padam87\BillingoBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Padam87\BillingoBundle\Service\Api;
-use Padam87\BillingoBundle\Service\Authenticator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
 
 class Padam87BillingoExtension extends Extension
 {

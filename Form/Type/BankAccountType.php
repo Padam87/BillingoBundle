@@ -9,11 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BankAccountType extends AbstractType
 {
-    private Helper $billingo;
-
-    public function __construct(Helper $billingo)
+    public function __construct(private Helper $billingo)
     {
-        $this->billingo = $billingo;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -23,7 +20,7 @@ class BankAccountType extends AbstractType
         $accounts = (array) $this->billingo->getBankAccounts();
 
         $choices = [];
-        foreach ($accounts as $id => $account) {
+        foreach ($accounts as $account) {
             $name = sprintf('[%s] %s', $account['name'], $account['account_number']);
 
             $choices[$name] = $account['id'];
